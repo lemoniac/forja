@@ -1,0 +1,17 @@
+set transport = TCP;
+set server_address = 192.168.0.1:2000;
+set client_address = 192.168.0.10:1234;
+
+packet {
+  client;
+  message Logon { Username = "username", Password = "passwd" };
+}
+packet {
+  server;
+  message "Logon Reply" { "Reject Code" = 0, "Password Expiry Day Count" = "123" }
+}
+packet {
+  client;
+  message Logout { Reason = "reason"};
+}
+
