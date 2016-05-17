@@ -1,0 +1,6 @@
+set transport = UDP;
+
+packet {
+  message Heartbeat { Session = "MYSESS", SequenceNumber = 12345 }
+}
+

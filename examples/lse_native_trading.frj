@@ -41,7 +41,6 @@ message "New Order" {
     char reserved: ignore;
     char reserved: ignore;
     uint8 "Order Type" : valid(1, 2, 3, 4);
-    uint8 TIF;
-    
+    uint8 TIF;    
 }
 

@@ -11,7 +11,7 @@ message "Order Book" {
 
     uint32 Nanosecond;
     char[8] "MFT Common Symbol";
-    char reserved : skip;
+    char reserved : ignore;
     char "Target Book" : valid('I');
 }
 

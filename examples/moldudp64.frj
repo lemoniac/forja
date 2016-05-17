@@ -1,0 +1,33 @@
+set big_endian;
+
+struct Header {
+    char[10] Session;
+    uint64 SequenceNumber;
+    uint16 MessageCount;
+}
+
+struct MessageBlock {
+    uint16 MessageLength;
+    char[MessageLength] MessageData : payload;
+}
+
+message Heartbeat {
+    char[10] Session;
+    uint64 SequenceNumber;
+    uint16 MessageCount = 0;
+}
+
+message EndOfSession {
+    char[10] Session;
+    uint64 SequenceNumber;
+    uint16 MessageCount = 65535;
+}
+
+message MoldUdp64 {
+    char[10] Session;
+    uint64 SequenceNumber;
+    uint16 MessageCount;
+
+    MessageBlock[MessageCount] Message;
+}
+
