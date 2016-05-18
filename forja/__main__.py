@@ -1,5 +1,5 @@
 #!/usr/bin/env python
 
-from .forja import main
+from forja import main
 
 main()
