@@ -22,5 +22,5 @@ class TextWriter:
                     l += str(field.fieldtype.default())
                 s += "        " + l + "\n"
 
-        return s
+        print s
 
