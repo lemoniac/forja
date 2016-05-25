@@ -7,10 +7,14 @@ class Field:
 		self.value = value
 
 	def __str__(self):
-		s = self.name
+		s = str(self.fieldtype) + " " + self.name
 
 		if self.value != None:
 			s += " = " + self.value
+		if self.ignore:
+			s += " ignore"
+		if self.valid != None:
+			s += " " + str(self.valid)
 
 		return s
 

@@ -13,6 +13,10 @@ class DefLoader:
 		token = self.lexer.get_token()
 		if len(token) == 0:
 			raise Exception("EOF")
+		if len(token) > 1 and token[0] == '"' and token[-1] == '"':
+		    return token[1:-1]
+		if len(token) > 1 and token[0] == "'" and token[-1] == "'":
+		    return token[1:-1]
 		return token
 
 	def expect(self, token):

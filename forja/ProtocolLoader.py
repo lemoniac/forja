@@ -1,5 +1,6 @@
 import shlex
 from Protocol import Field, Message, Protocol
+from Types import create_type
 
 types = ["char", "uint8", "int16", "uint16", "int32", "uint32"]
 
@@ -15,6 +16,10 @@ class Loader:
 		token = self.lexer.get_token()
 		if len(token) == 0:
 			raise Exception("EOF")
+		if len(token) > 1 and token[0] == '"' and token[-1] == '"':
+		    return token[1:-1]
+		if len(token) > 1 and token[0] == "'" and token[-1] == "'":
+		    return token[1:-1]
 		return token
 
 	def expect(self, token):
@@ -76,19 +81,22 @@ class Loader:
 
 		field_name = token
 
+		field = Field(field_name, create_type(field_type, size, True))
+
 		token = self.get_token()
 		if token == ";":
-			return (field_type, size, field_name)
+			return field
 		elif token == "=":
-			value = self.get_token()
+			field.value = self.get_token()
 			self.expect(";")
-			return (field_type, size, field_name, value)
+			return field
 		elif token == ":":
 			token = self.get_token()
 			if token == "ignore":
+				field.ignore = True
 				self.expect(";")
 			elif token == "valid":
-				valid = self.parse_list()
+				field.valid = self.parse_list()
 				self.expect(";")
-			return (field_type, size, field_name)
+			return field
 
