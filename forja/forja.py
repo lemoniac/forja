@@ -13,7 +13,7 @@ from BinaryWriter import BinaryWriter
 def main():
 
     parser = argparse.ArgumentParser(prog="forja")
-    parser.add_argument('files', type=str, nargs=2)
+    parser.add_argument('files', type=str, nargs=2, help="protocol packets")
     parser.add_argument('-t', dest='format', default='t', help="Format (b=binary, p=pcap, t=text)")
 
     args = parser.parse_args(sys.argv[1:])
