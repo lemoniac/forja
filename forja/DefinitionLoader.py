@@ -26,18 +26,30 @@ class DefLoader:
 	def load(self):
 		token = self.get_token()
 		while len(token) > 0:
-			try:
-				token = self.get_token()
-			except Exception:
-				return
 			if token == "set":
 				self.parse_set()
 			elif token == "packet":
 				self.packets.append(self.parse_packet())
+			else:
+			    raise Exception("Unexpected token: " + token)
+
+			try:
+				token = self.get_token()
+			except Exception:
+				return
 
 	def parse_set(self):
 		token = self.get_token()
+
 		if token == "transport":
+			self.expect("=")
+			self.get_token()
+			self.expect(";")
+		elif token == "server_address":
+			self.expect("=")
+			self.get_token()
+			self.expect(";")
+		elif token == "client_address":
 			self.expect("=")
 			self.get_token()
 			self.expect(";")
@@ -53,6 +65,8 @@ class DefLoader:
 				self.expect(";")
 			elif token == "message":
 				messages.append(self.parse_message())
+			else:
+			    raise Exception("Unexpected token: " + token)
 			token = self.get_token()
 
 		return Packet(messages)

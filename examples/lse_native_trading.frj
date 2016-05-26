@@ -3,6 +3,12 @@
 
 set little_endian;
 
+struct Header {
+    uint8 "Start of Message" = 2;
+    uint16 "Message Length";
+    char "Message Type";
+}
+
 message Logon {
     uint8 "Start of Message" = 2;
     uint16 "Message Length" = 76;

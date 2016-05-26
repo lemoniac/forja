@@ -34,7 +34,7 @@ class Message:
 class Protocol:
 	def __init__(self):
 		self.messages = {}
-		self.endianness = "littleendian"
+		self.endianness = "little_endian"
 
 	def __str__(self):
 		s = self.endianness + "\n"
