@@ -1,3 +1,5 @@
+# MoldUDP64 1.00
+# http://business.nasdaq.com/Docs/moldudp64_tcm5044-18016.pdf
 set big_endian;
 
 struct Header {
