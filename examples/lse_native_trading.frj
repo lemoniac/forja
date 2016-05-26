@@ -1,5 +1,6 @@
 # LSE Native Trading Gateway Issue 11.6
 # http://www.londonstockexchange.com/products-and-services/technical-library/millennium-exchange-technical-specifications/mit203160615.pdf
+
 set little_endian;
 
 message Logon {
