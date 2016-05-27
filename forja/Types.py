@@ -12,7 +12,7 @@ class Integer:
         else:
             return "uint" + str(self.width)
 
-    def default():
+    def default(self):
        return 0
 
     def from_string(self, value):
@@ -72,7 +72,7 @@ class String:
     def from_string(self, value):
         return value
 
-    def default():
+    def default(self):
         return ""
 
 

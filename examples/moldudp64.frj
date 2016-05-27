@@ -15,15 +15,11 @@ struct MessageBlock {
 }
 
 message Heartbeat {
-    char[10] Session;
-    uint64 SequenceNumber;
-    uint16 MessageCount = 0;
+    Header(MessageCount = 0);
 }
 
 message EndOfSession {
-    char[10] Session;
-    uint64 SequenceNumber;
-    uint16 MessageCount = 65535;
+    Header(MessageCount = 65535);
 }
 
 message MoldUdp64 {

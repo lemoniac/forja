@@ -1,3 +1,4 @@
+import copy
 import shlex
 from Protocol import Field, Message, Protocol
 from Types import create_type
@@ -47,7 +48,6 @@ class Loader:
 
 
     def parse_set(self):
-        print "parse set"
         token = self.get_token()
         if token == "little_endian":
             self.protocol.endianness = "little_endian"
@@ -58,17 +58,53 @@ class Loader:
         else:
             raise Exception("Unknown set: " + token)
 
+
     def parse_struct(self):
         name = self.get_token()
         fields = []
         self.expect("{")
         token = self.get_token()
         while token != "}":
-            fields.append( self.parse_field(token) )
+            if token in types:
+                fields.append( self.parse_field(token) )
+            elif token in self.structs:
+                for f in self.parse_user_type(token):
+                    fields.append(f)
+            else:
+                raise Exception("Type expected, found: " + token)
 
             token = self.get_token()
 
         return Message(name, fields)
+
+
+    def parse_user_type(self, name):
+        self.expect("(")
+        token = self.get_token()
+        fields = {}
+        while token != ")":
+            field_name = token
+
+            self.expect("=")
+            field_value = self.get_token()
+
+            token = self.get_token()
+            if token == ',':
+                token = self.get_token()
+
+            fields[field_name] = field_value
+
+        self.expect(";")
+
+        l = []
+        for f in self.structs[name].fields:
+            c = copy.copy(f)
+            if c.name in fields:
+                c.value = fields[c.name]
+            l.append( c )
+
+        return l
+
 
     def parse_list(self):
         l = []
@@ -83,9 +119,6 @@ class Loader:
         return l
 
     def parse_field(self, field_type):
-        if not field_type in types:
-            raise Exception("Type expected, found: " + field_type)
-
         token = self.get_token()
         size = 1
 

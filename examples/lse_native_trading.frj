@@ -10,9 +10,7 @@ struct Header {
 }
 
 message Logon {
-    uint8 "Start of Message" = 2;
-    uint16 "Message Length" = 76;
-    char "Message Type" = 'A';
+    Header("Message Length" = 76, "Message Type" = 'A');
 
     char[25] Username;
     char[25] Password;
@@ -21,26 +19,20 @@ message Logon {
 }
 
 message "Logon Reply" {
-    uint8 "Start of Message" = 2;
-    uint16 "Message Length" = 34;
-    char "Message Type" = 'B';
+    Header("Message Length" = 34, "Message Type" = 'B');
 
     uint32 "Reject Code";
     char[30] "Password Expiry Day Count";
 }
 
 message Logout {
-    uint8 "Start of Message" = 2;
-    uint16 "Message Length" = 20;
-    char "Message Type" = '5';
+    Header("Message Length" = 20, "Message Type" = '5');
 
     char[20] Reason;
 }
 
 message "New Order" {
-    uint8 "Start of Message" = 2;
-    uint16 "Message Length" = 18;
-    uint8 "Message Type" = 0x79;
+    Header("Message Length" = 18, "Message Type" = 0x79);
 
     char[20] "Client Order ID";
     char[11] "Trader ID";
