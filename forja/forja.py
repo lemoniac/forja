@@ -6,9 +6,6 @@ from DefinitionLoader import DefLoader
 from Protocol import Field, Message, Protocol
 from ProtocolLoader import Loader
 
-from TextWriter import TextWriter
-from BinaryWriter import BinaryWriter
-
 
 def main():
 
@@ -22,10 +19,20 @@ def main():
     def_loader = DefLoader(args.files[1])
 
     if args.format == 't':
+        from TextWriter import TextWriter
         writer = TextWriter(loader.protocol)
     elif args.format == 'b':
+        from BinaryWriter import BinaryWriter
         writer = BinaryWriter(loader.protocol)
+    elif args.format == 'p':
+        from PcapWriter import PcapWriter
+        writer = PcapWriter(loader.protocol)
+    else:
+        raise Exception("Unknown format")
 
+    packets = []
     for p in def_loader.packets:
-        writer.write(p)
+         packets.append( writer.write(p) )
+
+    writer.save(packets)
 

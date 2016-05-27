@@ -1,3 +1,5 @@
+import sys
+
 class TextWriter:
     def __init__(self, protocol):
         self.protocol = protocol
@@ -22,5 +24,9 @@ class TextWriter:
                     l += str(field.fieldtype.default())
                 s += "        " + l + "\n"
 
-        print s
+        return s
+
+    def save(self, packets):
+        for packet in packets:
+            sys.stdout.write(packet)
 

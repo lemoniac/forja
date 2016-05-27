@@ -23,5 +23,9 @@ class BinaryWriter:
 
                 s += field.fieldtype.encode( field.fieldtype.from_string(value) )
 
-        sys.stdout.write(s)
+        return s
+
+    def save(self, packets):
+        for packet in packets:
+            sys.stdout.write(packet)
 
