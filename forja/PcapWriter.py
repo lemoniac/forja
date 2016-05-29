@@ -11,12 +11,24 @@ class PcapWriter:
     def write(self, packet):
         s = self.writer.write(packet)
 
-        p = Ether()/IP()
+        if packet.is_server:
+            dst_address = self.definition.client_address[0]
+            dst_port=self.definition.client_address[1]
+            src_address = self.definition.server_address[0]
+            src_port=self.definition.server_address[1]
+        else:
+            src_address = self.definition.client_address[0]
+            src_port=self.definition.client_address[1]
+            dst_address = self.definition.server_address[0]
+            dst_port=self.definition.server_address[1]
+
+
+        p = Ether()/IP(src=src_address,dst=dst_address)
 
         if self.definition.transport == "TCP":
-            p = p/TCP()
+            p = p/TCP(sport=src_port,dport=dst_port)
         elif self.definition.transport == "UDP":
-            p = p/UDP()
+            p = p/UDP(sport=src_port,dport=dst_port)
         else:
             raise Exception("Unknown transport: " + self.definition.transport)
 

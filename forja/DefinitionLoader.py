@@ -42,6 +42,10 @@ class DefLoader:
             except Exception:
                 return
 
+    def parse_address(self):
+        (ip, port) = self.get_token().split(":")
+        return (ip, int(port))
+
 
     def parse_set(self):
         token = self.get_token()
@@ -52,16 +56,17 @@ class DefLoader:
             self.expect(";")
         elif token == "server_address":
             self.expect("=")
-            self.get_token()
+            self.definition.server_address = self.parse_address()
             self.expect(";")
         elif token == "client_address":
             self.expect("=")
-            self.get_token()
+            self.definition.client_address = self.parse_address()
             self.expect(";")
 
 
     def parse_packet(self):
         messages = []
+        is_server = False
         self.expect("{")
         token = self.get_token()
 
@@ -69,6 +74,7 @@ class DefLoader:
             if token == "client":
                 self.expect(";")
             elif token == "server":
+                is_server = True
                 self.expect(";")
             elif token == "message":
                 messages.append(self.parse_message())
@@ -77,7 +83,7 @@ class DefLoader:
 
             token = self.get_token()
 
-        return Packet(messages)
+        return Packet(messages, is_server)
 
 
     def parse_message(self):

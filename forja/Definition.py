@@ -1,6 +1,7 @@
 class Packet:
-	def __init__(self, messages = []):
+	def __init__(self, messages = [], is_server = False):
 		self.messages = messages
+		self.is_server = is_server
 
 	def __str__(self):
 		s = "Packet:\n"
@@ -10,7 +11,10 @@ class Packet:
 				s += "        " + f[0] + " = " + f[1] + "\n"
 		return s
 
+
 class Definition:
     def __init__(self):
         self.transport = "TCP"
+        self.server_address = ("127.0.0.1", 10000)
+        self.client_address = ("127.0.0.1", 10001)
 
