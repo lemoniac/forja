@@ -10,3 +10,7 @@ class Packet:
 				s += "        " + f[0] + " = " + f[1] + "\n"
 		return s
 
+class Definition:
+    def __init__(self):
+        self.transport = "TCP"
+

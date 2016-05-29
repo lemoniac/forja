@@ -26,7 +26,7 @@ def main():
         writer = BinaryWriter(loader.protocol)
     elif args.format == 'p':
         from PcapWriter import PcapWriter
-        writer = PcapWriter(loader.protocol)
+        writer = PcapWriter(loader.protocol, def_loader.definition)
     else:
         raise Exception("Unknown format")
 

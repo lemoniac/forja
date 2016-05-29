@@ -1,90 +1,99 @@
 import shlex
 
-from Definition import Packet
+from Definition import Definition, Packet
 
 class DefLoader:
-	def __init__(self, filename):
-		self.lexer = shlex.shlex(open(filename, "rt"))
+    def __init__(self, filename):
+        self.lexer = shlex.shlex(open(filename, "rt"))
 
-		self.packets = []
-		self.load()
+        self.definition = Definition()
+        self.packets = []
+        self.load()
 
-	def get_token(self):
-		token = self.lexer.get_token()
-		if len(token) == 0:
-			raise Exception("EOF")
-		if len(token) > 1 and token[0] == '"' and token[-1] == '"':
-		    return token[1:-1]
-		if len(token) > 1 and token[0] == "'" and token[-1] == "'":
-		    return token[1:-1]
-		return token
 
-	def expect(self, token):
-		if self.get_token() != token:
-			raise Exception("Expected: " + token)
+    def get_token(self):
+        token = self.lexer.get_token()
+        if len(token) == 0:
+            raise Exception("EOF")
+        if len(token) > 1 and token[0] == '"' and token[-1] == '"':
+            return token[1:-1]
+        if len(token) > 1 and token[0] == "'" and token[-1] == "'":
+            return token[1:-1]
+        return token
 
-	def load(self):
-		token = self.get_token()
-		while len(token) > 0:
-			if token == "set":
-				self.parse_set()
-			elif token == "packet":
-				self.packets.append(self.parse_packet())
-			else:
-			    raise Exception("Unexpected token: " + token)
 
-			try:
-				token = self.get_token()
-			except Exception:
-				return
+    def expect(self, token):
+        if self.get_token() != token:
+            raise Exception("Expected: " + token)
 
-	def parse_set(self):
-		token = self.get_token()
 
-		if token == "transport":
-			self.expect("=")
-			self.get_token()
-			self.expect(";")
-		elif token == "server_address":
-			self.expect("=")
-			self.get_token()
-			self.expect(";")
-		elif token == "client_address":
-			self.expect("=")
-			self.get_token()
-			self.expect(";")
+    def load(self):
+        token = self.get_token()
+        while len(token) > 0:
+            if token == "set":
+                self.parse_set()
+            elif token == "packet":
+                self.packets.append(self.parse_packet())
+            else:
+                raise Exception("Unexpected token: " + token)
 
-	def parse_packet(self):
-		messages = []
-		self.expect("{")
-		token = self.get_token()
-		while token != "}":
-			if token == "client":
-				self.expect(";")
-			elif token == "server":
-				self.expect(";")
-			elif token == "message":
-				messages.append(self.parse_message())
-			else:
-			    raise Exception("Unexpected token: " + token)
-			token = self.get_token()
+            try:
+                token = self.get_token()
+            except Exception:
+                return
 
-		return Packet(messages)
 
-	def parse_message(self):
-		name = self.get_token()
-		fields = []
-		self.expect("{")
-		token = self.get_token()
-		while token != "}":
-			field_name = token
-			self.expect("=")
-			field_value = self.get_token()
-			token = self.get_token()
-			if token == ",":
-				token = self.get_token()
+    def parse_set(self):
+        token = self.get_token()
 
-			fields.append( (field_name, field_value) )
+        if token == "transport":
+            self.expect("=")
+            self.definition.transport = self.get_token()
+            self.expect(";")
+        elif token == "server_address":
+            self.expect("=")
+            self.get_token()
+            self.expect(";")
+        elif token == "client_address":
+            self.expect("=")
+            self.get_token()
+            self.expect(";")
 
-		return (name, fields)
+
+    def parse_packet(self):
+        messages = []
+        self.expect("{")
+        token = self.get_token()
+
+        while token != "}":
+            if token == "client":
+                self.expect(";")
+            elif token == "server":
+                self.expect(";")
+            elif token == "message":
+                messages.append(self.parse_message())
+            else:
+                raise Exception("Unexpected token: " + token)
+
+            token = self.get_token()
+
+        return Packet(messages)
+
+
+    def parse_message(self):
+        name = self.get_token()
+        fields = []
+        self.expect("{")
+        token = self.get_token()
+        while token != "}":
+            field_name = token
+            self.expect("=")
+            field_value = self.get_token()
+            token = self.get_token()
+            if token == ",":
+                token = self.get_token()
+
+            fields.append( (field_name, field_value) )
+
+        return (name, fields)
 
