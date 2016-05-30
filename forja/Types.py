@@ -98,3 +98,6 @@ def create_type(name, length, LE):
     if name == "char":
         return Fixed(length)
 
+    if name == "string":
+        return String()
+

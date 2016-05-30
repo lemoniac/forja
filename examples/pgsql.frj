@@ -1,0 +1,13 @@
+set big_endian;
+
+message "Bind completion" {
+    char Type = '2';
+    uint32 Length = 4;
+}
+
+message "Command completion" {
+    char Type = 'C';
+    uint32 Length;
+    string Tag;
+}
+

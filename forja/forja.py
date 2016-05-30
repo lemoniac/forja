@@ -15,8 +15,8 @@ def main():
 
     args = parser.parse_args(sys.argv[1:])
 
-    loader = Loader(args.files[0])
-    def_loader = DefLoader(args.files[1])
+    loader = Loader( open(args.files[0], "rt") )
+    def_loader = DefLoader( open(args.files[1], "rt") )
 
     if args.format == 't':
         from TextWriter import TextWriter

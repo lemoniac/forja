@@ -3,8 +3,8 @@ import shlex
 from Definition import Definition, Packet
 
 class DefLoader:
-    def __init__(self, filename):
-        self.lexer = shlex.shlex(open(filename, "rt"))
+    def __init__(self, src):
+        self.lexer = shlex.shlex(src)
 
         self.definition = Definition()
         self.packets = []

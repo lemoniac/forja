@@ -26,7 +26,7 @@ class PcapWriter:
         p = Ether()/IP(src=src_address,dst=dst_address)
 
         if self.definition.transport == "TCP":
-            p = p/TCP(sport=src_port,dport=dst_port)
+            p = p/TCP(sport=src_port,dport=dst_port,seq=0,flags="PA",ack=0)
         elif self.definition.transport == "UDP":
             p = p/UDP(sport=src_port,dport=dst_port)
         else:

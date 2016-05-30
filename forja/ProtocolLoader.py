@@ -3,11 +3,11 @@ import shlex
 from Protocol import Field, Message, Protocol
 from Types import create_type
 
-types = ["char", "uint8", "int16", "uint16", "int32", "uint32"]
+types = ["char", "uint8", "int16", "uint16", "int32", "uint32", "string"]
 
 class Loader:
-    def __init__(self, filename):
-        self.lexer = shlex.shlex(open(filename, "rt"))
+    def __init__(self, src):
+        self.lexer = shlex.shlex(src)
 
         self.protocol = Protocol()
         self.structs = {}
