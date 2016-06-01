@@ -17,3 +17,8 @@ packet {
   message Logout { Reason = "reason" }
 }
 
+packet {
+  client;
+  message "Order Cancel Request" { }
+}
+

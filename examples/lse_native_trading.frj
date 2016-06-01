@@ -3,6 +3,11 @@
 
 set little_endian;
 
+enum Side : int8 {
+    Buy = 1,
+    Sell = 2
+}
+
 struct Header {
     uint8 "Start of Message" = 2;
     uint16 "Message Length";
@@ -43,5 +48,18 @@ message "New Order" {
     char reserved: ignore;
     uint8 "Order Type" : valid(1, 2, 3, 4);
     uint8 TIF;    
+}
+
+message "Order Cancel Request" {
+    Header("Message Length" = 59, "Message Type" = 'F');
+
+    char[20] "Client Order ID";
+    char[20] "Original Client Order ID";
+    char[12] "Order ID";
+    int32 "Instrument ID";
+    int8 reserved1: ignore;
+    int8 reserved2: ignore;
+    Side Side;
+    char[10] reserved3: ignore;
 }
 

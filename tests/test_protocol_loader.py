@@ -34,7 +34,25 @@ class TestProtocolLoader(unittest.TestCase):
                 S();
             }""")
         m = loader.protocol.messages["M"]
-        print m
+
+        assert m.fields[0].name == "s.i"
+        assert m.fields[1].name == "i"
+
+
+    def test_enum(self):
+        loader = Loader("""
+            enum Side : char {
+                Buy = '1',
+                Sell = '2'
+            }
+
+            message M {
+                Side side = Sell;
+            }""")
+
+        m = loader.protocol.messages["M"]
+
+        assert m.fields[0].value == "2"
 
 
     def test_syntax_error(self):
