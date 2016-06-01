@@ -23,6 +23,20 @@ class TestProtocolLoader(unittest.TestCase):
         assert "A message" in msgs
 
 
+    def test_struct(self):
+        loader = Loader("""
+            struct S {
+                int32 i;
+            }
+
+            message M {
+                S s();
+                S();
+            }""")
+        m = loader.protocol.messages["M"]
+        print m
+
+
     def test_syntax_error(self):
         assert check_syntax("""message Msg { }""") == ""
         assert check_syntax("""message Msg { """) == "EOF"

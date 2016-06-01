@@ -79,7 +79,13 @@ class Loader:
 
 
     def parse_user_type(self, name):
-        self.expect("(")
+        token = self.get_token()
+        if token != "(":
+            prefix = token + "."
+            self.expect("(")
+        else:
+            prefix = None
+
         token = self.get_token()
         fields = {}
         while token != ")":
@@ -101,6 +107,10 @@ class Loader:
             c = copy.copy(f)
             if c.name in fields:
                 c.value = fields[c.name]
+
+            if prefix != None:
+                c.name = prefix + c.name
+
             l.append( c )
 
         return l
