@@ -127,15 +127,14 @@ class Loader:
     def parse_enum_instance(self, name):
         field_name = self.get_token()
         token = self.get_token()
+        enum = self.protocol.enums[name]
         if token == ";":
-            return Field(field_name, self.protocol.enums[name].type)
+            return Field(field_name, self.protocol.enums[name].type, enum = enum)
         elif token != "=":
             raise Exception("Expected ';' or '=', found: " + token)
 
         field_value = self.get_token()
         self.expect(";")
-
-        enum = self.protocol.enums[name]
 
         return Field(field_name, enum.type, value = enum.get(field_value), enum = enum)
 

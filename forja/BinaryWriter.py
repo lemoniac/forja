@@ -15,7 +15,10 @@ class BinaryWriter:
 
             for field in message.fields:
                 if field.name in fields:
-                    value = fields[field.name]
+                    if field.enum == None:
+                        value = fields[field.name]
+                    else:
+                        value = field.enum.get( fields[field.name] )
                 elif field.value != None:
                     value = field.value
                 else:

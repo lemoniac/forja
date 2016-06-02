@@ -19,6 +19,6 @@ packet {
 
 packet {
   client;
-  message "Order Cancel Request" { }
+  message "Order Cancel Request" { Side = Sell }
 }
 

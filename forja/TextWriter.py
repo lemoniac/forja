@@ -17,7 +17,10 @@ class TextWriter:
             for field in message.fields:
                 l = field.name + " = "
                 if field.name in fields:
-                    l += fields[field.name]
+                    if field.enum == None:
+                        l += fields[field.name]
+                    else:
+                        l += field.enum.get( fields[field.name] )
                 elif field.value != None:
                     l += str(field.value)
                 else:
