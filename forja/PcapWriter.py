@@ -2,10 +2,11 @@ from scapy.all import *
 from BinaryWriter import BinaryWriter
 
 class PcapWriter:
-    def __init__(self, protocol, definition):
+    def __init__(self, protocol, definition, outfile):
         self.protocol = protocol
         self.definition = definition
         self.writer = BinaryWriter(protocol)
+        self.outfile = outfile
 
 
     def write(self, packet):
@@ -38,5 +39,5 @@ class PcapWriter:
 
 
     def save(self, packets):
-        wrpcap("test.pcap", packets)
+        wrpcap(self.outfile, packets)
 
