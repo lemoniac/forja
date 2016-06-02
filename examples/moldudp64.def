@@ -1,6 +1,7 @@
 set transport = UDP;
 
 packet {
+  timestamp = "1464906274.651894";
   message Heartbeat { Session = "MYSESS", SequenceNumber = 12345 }
 }
 

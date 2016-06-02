@@ -47,6 +47,14 @@ class DefLoader:
         return (ip, int(port))
 
 
+    def parse_timestamp(self):
+        self.expect("=");
+        timestamp = self.get_token()
+        float(timestamp)
+        self.expect(";");
+        return timestamp
+
+
     def parse_set(self):
         token = self.get_token()
 
@@ -67,6 +75,7 @@ class DefLoader:
     def parse_packet(self):
         messages = []
         is_server = False
+        timestamp = None
         self.expect("{")
         token = self.get_token()
 
@@ -76,6 +85,8 @@ class DefLoader:
             elif token == "server":
                 is_server = True
                 self.expect(";")
+            elif token == "timestamp":
+                timestamp = self.parse_timestamp();
             elif token == "message":
                 messages.append(self.parse_message())
             else:
@@ -83,7 +94,7 @@ class DefLoader:
 
             token = self.get_token()
 
-        return Packet(messages, is_server)
+        return Packet(messages, is_server, timestamp = timestamp)
 
 
     def parse_message(self):

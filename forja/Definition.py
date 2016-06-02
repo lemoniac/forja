@@ -1,7 +1,9 @@
 class Packet:
-	def __init__(self, messages = [], is_server = False):
+	def __init__(self, messages = [], is_server = False, timestamp = None):
 		self.messages = messages
 		self.is_server = is_server
+		self.timestamp = timestamp
+
 
 	def __str__(self):
 		s = "Packet:\n"

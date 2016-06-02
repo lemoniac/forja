@@ -25,6 +25,8 @@ class PcapWriter:
 
 
         p = Ether()/IP(src=src_address,dst=dst_address)
+        if packet.timestamp != None:
+            p.time = packet.timestamp
 
         if self.definition.transport == "TCP":
             p = p/TCP(sport=src_port,dport=dst_port,seq=0,flags="PA",ack=0)
