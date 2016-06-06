@@ -33,6 +33,7 @@ class TextWriter:
 
         return s
 
+
     def save(self, packets):
         for packet in packets:
             sys.stdout.write(packet)

@@ -7,6 +7,7 @@ class Integer:
         self.endianness = "<" if LE else ">"
         self.signed = signed
 
+
     def __str__(self):
         if self.signed:
             return "int" + str(self.width)
@@ -20,7 +21,7 @@ class Integer:
 
     def random(self):
         if self.signed:
-            return random.randrange(-(1<<(self.width - 1)), (1<<(self.width-1) - 1))
+            return random.randrange(-(1<<(self.width - 1)), ((1<<(self.width-1)) - 1))
         else:
             return random.randrange(0, (1<<self.width) - 1)
 
