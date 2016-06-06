@@ -8,6 +8,7 @@ types = ["char", "int8", "uint8", "int16", "uint16", "int32", "uint32", "int64",
 class Loader:
     def __init__(self, src):
         self.lexer = shlex.shlex(src)
+        self.lexer.wordchars += "."
 
         self.protocol = Protocol()
         self.structs = {}

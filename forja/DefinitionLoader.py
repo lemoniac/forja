@@ -5,6 +5,7 @@ from Definition import Definition, Packet
 class DefLoader:
     def __init__(self, src):
         self.lexer = shlex.shlex(src)
+        self.lexer.wordchars += "."
 
         self.definition = Definition()
         self.packets = []
@@ -43,14 +44,15 @@ class DefLoader:
                 return
 
     def parse_address(self):
-        (ip, port) = self.get_token().split(":")
+        ip = self.get_token()
+        self.expect(":")
+        port = self.get_token()
         return (ip, int(port))
 
 
     def parse_timestamp(self):
         self.expect("=");
-        timestamp = self.get_token()
-        float(timestamp)
+        timestamp = float( self.get_token() )
         self.expect(";");
         return timestamp
 
