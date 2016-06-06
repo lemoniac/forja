@@ -1,4 +1,5 @@
 from struct import pack
+import random
 
 class Integer:
     def __init__(self, width, signed = False, LE = True):
@@ -12,11 +13,21 @@ class Integer:
         else:
             return "uint" + str(self.width)
 
+
     def default(self):
        return 0
 
+
+    def random(self):
+        if self.signed:
+            return random.randrange(-(1<<(self.width - 1)), (1<<(self.width-1) - 1))
+        else:
+            return random.randrange(0, (1<<self.width) - 1)
+
+
     def from_string(self, value):
         return int(value)
+
 
     def encode(self, value):
         if self.signed:
@@ -47,17 +58,30 @@ class Fixed:
     def __init__(self, length):
         self.length = length
 
+
     def __str__(self):
         if self.length == 1:
             return "char"
         else:
             return "char[" + str(self.length) + "]"
 
+
     def default(self):
         return ""
 
+
+    def random(self):
+        l = random.randint(0, self.length)
+        s = ""
+        for i in xrange(l):
+            s += chr(random.randint(65, 90))
+
+        return s
+
+
     def from_string(self, value):
         return value
+
 
     def encode(self, value):
         return pack(str(self.length) + "s", value)

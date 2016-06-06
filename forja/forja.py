@@ -13,6 +13,7 @@ def main():
     parser.add_argument('files', type=str, nargs=2, help="protocol packets")
     parser.add_argument('-t', dest='format', default='t', help="Format (b=binary, p=pcap, t=text)")
     parser.add_argument('-o', dest='outfile', help='output file')
+    parser.add_argument('-r', action='store_true', dest='random', help='fill fields with random values')
 
     args = parser.parse_args(sys.argv[1:])
 
@@ -21,16 +22,16 @@ def main():
 
     if args.format == 't':
         from TextWriter import TextWriter
-        writer = TextWriter(loader.protocol)
+        writer = TextWriter(loader.protocol, random=args.random)
     elif args.format == 'b':
         from BinaryWriter import BinaryWriter
-        writer = BinaryWriter(loader.protocol)
+        writer = BinaryWriter(loader.protocol, random=args.random)
     elif args.format == 'p':
         if args.outfile == None:
             print "Error: output format 'pcap' needs an output file [-o filename]"
             return 1
         from PcapWriter import PcapWriter
-        writer = PcapWriter(loader.protocol, def_loader.definition, args.outfile)
+        writer = PcapWriter(loader.protocol, def_loader.definition, args.outfile, random=args.random)
     else:
         raise Exception("Unknown format")
 

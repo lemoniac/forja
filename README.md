@@ -8,6 +8,8 @@
 # OPTIONS
     -h
     -t (b|p|t)     Format of the output (binary, pcap, text)
+    -o pcap        Output pcap
+    -r             Fill fields with random values
 
 
 # Definition files
