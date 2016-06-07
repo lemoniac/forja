@@ -1,9 +1,9 @@
 import sys
+from Writer import Writer
 
-class TextWriter:
+class TextWriter(Writer):
     def __init__(self, protocol, random = False):
-        self.protocol = protocol
-        self.random = random
+        Writer.__init__(self, protocol, random)
 
 
     def write(self, packet):
@@ -17,18 +17,7 @@ class TextWriter:
 
             s += "    Message " + m[0] + "\n"
             for field in message.fields:
-                l = field.name + " = "
-                if field.name in fields:
-                    if field.enum == None:
-                        l += fields[field.name]
-                    else:
-                        l += field.enum.get( fields[field.name] )
-                elif field.value != None:
-                    l += str(field.value)
-                elif not field.ignore and self.random:
-                    l += str(field.fieldtype.random())
-                else:
-                    l += str(field.fieldtype.default())
+                l = field.name + " = " + str(self.get_value(fields, field))
                 s += "        " + l + "\n"
 
         return s

@@ -1,9 +1,9 @@
 import sys
+from Writer import Writer
 
-class BinaryWriter:
+class BinaryWriter(Writer):
     def __init__(self, protocol, random = False):
-        self.protocol = protocol
-        self.random = random
+        Writer.__init__(self, protocol, random)
 
 
     def write(self, packet):
@@ -16,17 +16,7 @@ class BinaryWriter:
             message = self.protocol.messages[m[0]]
 
             for field in message.fields:
-                if field.name in fields:
-                    if field.enum == None:
-                        value = fields[field.name]
-                    else:
-                        value = field.enum.get( fields[field.name] )
-                elif field.value != None:
-                    value = field.value
-                elif not field.ignore and self.random:
-                    value = field.fieldtype.random()
-                else:
-                    value = field.fieldtype.default()
+                value = self.get_value(fields, field)
 
                 s += field.fieldtype.encode( field.fieldtype.from_string(value) )
 

@@ -1,13 +1,13 @@
 from scapy.all import *
 from BinaryWriter import BinaryWriter
+from Writer import Writer
 
-class PcapWriter:
+class PcapWriter(Writer):
     def __init__(self, protocol, definition, outfile, random = False):
-        self.protocol = protocol
+        Writer.__init__(self, protocol, random)
         self.definition = definition
         self.writer = BinaryWriter(protocol, random = random)
         self.outfile = outfile
-        self.random = random
 
 
     def write(self, packet):

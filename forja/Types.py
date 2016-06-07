@@ -15,6 +15,10 @@ class Integer:
             return "uint" + str(self.width)
 
 
+    def __len__(self):
+        return self.width / 8
+
+
     def default(self):
        return 0
 
@@ -67,6 +71,10 @@ class Fixed:
             return "char[" + str(self.length) + "]"
 
 
+    def __len__(self):
+        return self.length
+
+
     def default(self):
         return ""
 
@@ -90,6 +98,9 @@ class Fixed:
 
 class String:
     """Null terminated string"""
+
+    def __len__(self):
+        return self.length + 1
 
     def encode(self, value):
         return value + '\0'

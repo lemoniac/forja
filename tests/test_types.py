@@ -10,6 +10,10 @@ class TestTypes(unittest.TestCase):
         assert i.encode(1234) == '\xd2\x04\x00\x00'
         assert i.encode(-1) == '\xff\xff\xff\xff'
 
+        assert len(i) == 4
+
+        assert len( Integer(16, True, True) ) == 2
+
 
     def test_int32_be(self):
         i = Integer(32, True, False)
@@ -25,6 +29,8 @@ class TestTypes(unittest.TestCase):
         assert s.encode("") == "\0\0\0\0\0\0\0\0\0\0"
         assert s.encode("asd") == "asd\0\0\0\0\0\0\0"
         assert s.encode("01234567890123456789") == "0123456789"
+
+        assert len(s) == 10
 
 
     def test_string(self):
