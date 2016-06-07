@@ -11,7 +11,7 @@ def main():
 
     parser = argparse.ArgumentParser(prog="forja")
     parser.add_argument('files', type=str, nargs=2, help="protocol packets")
-    parser.add_argument('-t', dest='format', default='t', help="Format (b=binary, p=pcap, t=text)")
+    parser.add_argument('-t', dest='format', default='t', help="Format (b=binary, p=pcap, t=text, x=xml)")
     parser.add_argument('-o', dest='outfile', help='output file')
     parser.add_argument('-r', action='store_true', dest='random', help='fill fields with random values')
 
@@ -32,6 +32,9 @@ def main():
             return 1
         from PcapWriter import PcapWriter
         writer = PcapWriter(loader.protocol, def_loader.definition, args.outfile, random=args.random)
+    elif args.format == 'x':
+        from XmlWriter import XmlWriter
+        writer = XmlWriter(loader.protocol, random=args.random)
     else:
         raise Exception("Unknown format")
 
