@@ -13,6 +13,10 @@ class Enum:
         raise Exception(key + " is not present in enum " + self.name)
 
 
+    def get_default(self):
+        return self.items[0][1]
+
+
 class Field:
     def __init__(self, name, fieldtype, valid = None, ignore = False, value = None, enum = None):
         self.name = name

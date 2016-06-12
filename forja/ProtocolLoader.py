@@ -130,7 +130,8 @@ class Loader:
         token = self.get_token()
         enum = self.protocol.enums[name]
         if token == ";":
-            return Field(field_name, self.protocol.enums[name].type, enum = enum)
+            field_value = enum.get_default()
+            return Field(field_name, self.protocol.enums[name].type, value = field_value, enum = enum)
         elif token != "=":
             raise Exception("Expected ';' or '=', found: " + token)
 
