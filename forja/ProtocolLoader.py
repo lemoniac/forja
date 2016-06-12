@@ -180,7 +180,7 @@ class Loader:
                 field.ignore = True
                 self.expect(";")
             elif token == "valid":
-                field.valid = self.parse_list()
+                field.set_valid( self.parse_list() )
                 self.expect(";")
             else:
                 raise Exception("Unknown field modifier: " + token)

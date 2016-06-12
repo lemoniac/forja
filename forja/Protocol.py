@@ -40,6 +40,12 @@ class Field:
         return s
 
 
+    def set_valid(self, valid):
+        self.valid = valid
+        if self.value == None and len(self.valid) > 0:
+            self.value = self.valid[0]
+
+
 class Message:
     def __init__(self, name, fields):
         self.name = name
