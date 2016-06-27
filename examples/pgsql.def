@@ -1,6 +1,6 @@
 set transport = TCP;
-set client_address = "127.0.0.1:12345";
-set server_address = "127.0.0.1:5432";
+set client_address = 127.0.0.1:12345;
+set server_address = 127.0.0.1:5432;
 
 packet {
     server;
