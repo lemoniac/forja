@@ -22,7 +22,7 @@ def main():
 
     if args.format == 't':
         from TextWriter import TextWriter
-        writer = TextWriter(loader.protocol, random=args.random)
+        writer = TextWriter(loader.protocol, def_loader.definition, random=args.random)
     elif args.format == 'b':
         from BinaryWriter import BinaryWriter
         writer = BinaryWriter(loader.protocol, random=args.random)
@@ -34,7 +34,7 @@ def main():
         writer = PcapWriter(loader.protocol, def_loader.definition, args.outfile, random=args.random)
     elif args.format == 'x':
         from XmlWriter import XmlWriter
-        writer = XmlWriter(loader.protocol, random=args.random)
+        writer = XmlWriter(loader.protocol, def_loader.definition, random=args.random)
     else:
         raise Exception("Unknown format")
 

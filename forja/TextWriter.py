@@ -2,12 +2,22 @@ import sys
 from Writer import Writer
 
 class TextWriter(Writer):
-    def __init__(self, protocol, random = False):
+    def __init__(self, protocol, definition, random = False):
         Writer.__init__(self, protocol, random)
+        self.definition = definition
 
 
     def write(self, packet):
-        s = "Packet:\n"
+        s = "Packet:"
+        if packet.timestamp != None:
+            s += " ts=" + str(packet.timestamp)
+        if packet.is_server:
+            s += ' src=' + str(self.definition.server_address[0]) + ":" + str(self.definition.server_address[1])
+            s += ' dst=' + str(self.definition.client_address[0]) + ":" + str(self.definition.client_address[1])
+        else:
+            s += ' src=' + str(self.definition.client_address[0]) + ":" + str(self.definition.client_address[1])
+            s += ' dst=' + str(self.definition.server_address[0]) + ":" + str(self.definition.server_address[1])
+        s += "\n"
         for m in packet.messages:
             fields = {}
             for f in m[1]:
