@@ -112,6 +112,22 @@ class String:
         return ""
 
 
+class LenString:
+    """Length+string"""
+
+    def __len__(self):
+        return self.length + 1
+
+    def encode(self, value):
+        return pack("<b", len(value)) + value
+
+    def from_string(self, value):
+        return value
+
+    def default(self):
+        return '\0'
+
+
 def create_type(name, length, LE):
     if name == "int8":
         return Integer(8, True, LE)
@@ -136,4 +152,6 @@ def create_type(name, length, LE):
 
     if name == "string":
         return String()
+    if name == "lenstring":
+        return LenString()
 

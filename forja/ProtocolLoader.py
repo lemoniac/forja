@@ -3,7 +3,7 @@ import shlex
 from Protocol import Enum, Field, Message, Protocol
 from Types import create_type
 
-types = ["char", "int8", "uint8", "int16", "uint16", "int32", "uint32", "int64", "uint64", "string"]
+types = ["char", "int8", "uint8", "int16", "uint16", "int32", "uint32", "int64", "uint64", "string", "lenstring"]
 
 class Loader:
     def __init__(self, src):
@@ -206,5 +206,5 @@ class Loader:
 
             items.append( (item_name, item_value) )
 
-        return Enum(name, create_type(enum_type, 1, True), items)
+        return Enum(name, create_type(enum_type, 1, self.protocol.endianness == "little_endian"), items)
 
