@@ -1,0 +1,12 @@
+set transport = UDP;
+
+packet {
+  timestamp = 1464906274.651894;
+  message Query { id=0,
+    flags=0,
+    QDCount=1,
+    QName="",
+    QType=TXT,
+    QClass=1 }
+}
+
