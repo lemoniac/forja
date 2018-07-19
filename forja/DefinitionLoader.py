@@ -107,7 +107,19 @@ class DefLoader:
         while token != "}":
             field_name = token
             self.expect("=")
-            field_value = self.get_token()
+            token = self.get_token()
+            if token == "[":
+                field_value = []
+                token = self.get_token()
+                while token != "]":
+                    field_value.append(token)
+                    token = self.get_token()
+                    if token == ",":
+                        token = self.get_token()
+
+            else:
+                field_value = token
+
             token = self.get_token()
             if token == ",":
                 token = self.get_token()

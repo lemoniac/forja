@@ -18,13 +18,14 @@ class Enum:
 
 
 class Field:
-    def __init__(self, name, fieldtype, valid = None, ignore = False, value = None, enum = None):
+    def __init__(self, name, fieldtype, valid = None, ignore = False, value = None, enum = None, islist = False):
         self.name = name
         self.fieldtype = fieldtype
         self.valid = valid
         self.ignore = ignore
         self.value = value
         self.enum = enum
+        self.islist = islist
 
 
     def __str__(self):

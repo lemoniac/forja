@@ -29,12 +29,27 @@ struct Header {
 }
 
 struct Question {
-    lenstring QName;
+    lenstring QName : list;
     QType QType;
     uint16 QClass;
+}
+
+struct Resource {
+    lenstring name;
+    uint16 type;
+    uint16 class;
+    uint16 ttl;
+    uint16 rdlength;
+    # uint8 rdata[rdlength];
 }
 
 message Query {
     Header();
     Question();
+}
+
+message Answer {
+    Header();
+    Question();
+    Resource();
 }

@@ -31,6 +31,8 @@ class Integer:
 
 
     def from_string(self, value):
+        if type(value) == str and value.startswith("0x"):
+            return int(value, 16)
         return int(value)
 
 

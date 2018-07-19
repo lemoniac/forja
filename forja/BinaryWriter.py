@@ -18,7 +18,11 @@ class BinaryWriter(Writer):
             for field in message.fields:
                 value = self.get_value(fields, field)
 
-                s += field.fieldtype.encode( field.fieldtype.from_string(value) )
+                if field.islist:
+                    for v in value:
+                        s += field.fieldtype.encode( field.fieldtype.from_string(v) )
+                else:
+                    s += field.fieldtype.encode( field.fieldtype.from_string(value) )
 
         return s
 

@@ -182,6 +182,9 @@ class Loader:
             elif token == "valid":
                 field.set_valid( self.parse_list() )
                 self.expect(";")
+            elif token == "list":
+                field.islist = True
+                self.expect(";")
             else:
                 raise Exception("Unknown field modifier: " + token)
 

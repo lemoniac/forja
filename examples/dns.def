@@ -5,8 +5,24 @@ packet {
   message Query { id=0,
     flags=0,
     QDCount=1,
-    QName="",
+    QName=["google", "com", ""],
     QType=TXT,
     QClass=1 }
 }
 
+packet {
+  timestamp = 1464906274.751894;
+  message Answer { id=0,
+    flags=0x8000,
+    QDCount=1,
+    ANCount=1,
+    QName=["google", "com", ""],
+    QType=TXT,
+    QClass=1,
+    
+    name="",
+    type=1
+    class=2,
+    ttl=3,
+    rdlength=0 }
+}

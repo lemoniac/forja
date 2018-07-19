@@ -27,7 +27,13 @@ class TextWriter(Writer):
 
             s += "    Message " + m[0] + "\n"
             for field in message.fields:
-                l = field.name + " = " + str(self.get_value(fields, field))
+                value = self.get_value(fields, field)
+                l = field.name + " = "
+                if field.islist:
+                    for v in value:
+                        l += repr(v) + "   "
+                else:
+                    l += str(value)
                 s += "        " + l + "\n"
 
         return s
