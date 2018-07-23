@@ -3,9 +3,9 @@ import shlex
 from Protocol import Enum, Field, Message, Protocol
 from Types import create_type
 
-types = ["char", "int8", "uint8", "int16", "uint16", "int32", "uint32", "int64", "uint64", "string", "lenstring"]
+FIELD_TYPES = ["char", "int8", "uint8", "int16", "uint16", "int32", "uint32", "int64", "uint64", "string", "lenstring"]
 
-class Loader:
+class Loader(object):
     def __init__(self, src):
         self.lexer = shlex.shlex(src)
         self.lexer.wordchars += "."
@@ -13,22 +13,30 @@ class Loader:
         self.protocol = Protocol()
         self.structs = {}
 
+        self.token = ""
+        self.token_type = ""
+
         self.load()
 
 
+
     def get_token(self):
-        token = self.lexer.get_token()
-        if len(token) == 0:
+        self.token = self.lexer.get_token()
+        if len(self.token) == 0:
             raise Exception("EOF")
-        if len(token) > 1 and token[0] == '"' and token[-1] == '"':
-            return token[1:-1]
-        if len(token) > 1 and token[0] == "'" and token[-1] == "'":
-            return token[1:-1]
-        return token
+        if len(self.token) > 1 and self.token[0] == '"' and self.token[-1] == '"':
+            self.token_type = "str"
+            return self.token[1:-1]
+        if len(self.token) > 1 and self.token[0] == "'" and self.token[-1] == "'":
+            self.token_type = "str"
+            return self.token[1:-1]
+
+        self.token_type = ""
+        return self.token
 
 
     def expect(self, token):
-        t = self.get_token() 
+        t = self.get_token()
         if t != token:
             raise Exception("Expected: " + token + " found " + t)
 
@@ -45,6 +53,8 @@ class Loader:
                 self.protocol.add_message( self.parse_struct() )
             elif token == "enum":
                 self.protocol.add_enum( self.parse_enum() )
+            elif token == "const":
+                self.parse_const()
             else:
                 raise Exception("Unexpected token: " + token)
 
@@ -72,7 +82,7 @@ class Loader:
         self.expect("{")
         token = self.get_token()
         while token != "}":
-            if token in types:
+            if token in FIELD_TYPES:
                 fields.append( self.parse_field(token) )
             elif token in self.structs:
                 for f in self.parse_user_type(token):
@@ -120,7 +130,7 @@ class Loader:
             if prefix != None:
                 c.name = prefix + c.name
 
-            l.append( c )
+            l.append(c)
 
         return l
 
@@ -131,14 +141,14 @@ class Loader:
         enum = self.protocol.enums[name]
         if token == ";":
             field_value = enum.get_default()
-            return Field(field_name, self.protocol.enums[name].type, value = field_value, enum = enum)
+            return Field(field_name, self.protocol.enums[name].type, value=field_value, enum=enum)
         elif token != "=":
             raise Exception("Expected ';' or '=', found: " + token)
 
         field_value = self.get_token()
         self.expect(";")
 
-        return Field(field_name, enum.type, value = enum.get(field_value), enum = enum)
+        return Field(field_name, enum.type, value=enum.get(field_value), enum=enum)
 
 
     def parse_list(self):
@@ -156,6 +166,12 @@ class Loader:
 
     def parse_field(self, field_type):
         token = self.get_token()
+
+        bits = None
+        if token == ":":
+            bits = int(self.get_token())
+            token = self.get_token()
+
         size = 1
 
         if field_type == "char" and token == "[":
@@ -166,6 +182,8 @@ class Loader:
         field_name = token
 
         field = Field(field_name, create_type(field_type, size, self.protocol.endianness == "little_endian"))
+        if bits != None:
+            field.bits = bits
 
         token = self.get_token()
         if token == ";":
@@ -211,3 +229,11 @@ class Loader:
 
         return Enum(name, create_type(enum_type, 1, self.protocol.endianness == "little_endian"), items)
 
+
+    def parse_const(self):
+        name = self.get_token()
+        self.expect("=")
+        value = self.get_token()
+        self.expect(";")
+
+        self.protocol.consts[name] = value

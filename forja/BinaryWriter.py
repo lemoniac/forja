@@ -2,7 +2,7 @@ import sys
 from Writer import Writer
 
 class BinaryWriter(Writer):
-    def __init__(self, protocol, random = False):
+    def __init__(self, protocol, random=False):
         Writer.__init__(self, protocol, random)
 
 

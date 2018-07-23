@@ -2,8 +2,6 @@ import argparse
 import sys
 
 from DefinitionLoader import DefLoader
-
-from Protocol import Field, Message, Protocol
 from ProtocolLoader import Loader
 
 
@@ -27,7 +25,7 @@ def main():
         from BinaryWriter import BinaryWriter
         writer = BinaryWriter(loader.protocol, random=args.random)
     elif args.format == 'p':
-        if args.outfile == None:
+        if args.outfile is None:
             print "Error: output format 'pcap' needs an output file [-o filename]"
             return 1
         from PcapWriter import PcapWriter

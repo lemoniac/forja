@@ -1,4 +1,4 @@
-class Enum:
+class Enum(object):
     def __init__(self, name, enum_type, items):
         self.name = name
         self.type = enum_type
@@ -17,8 +17,8 @@ class Enum:
         return self.items[0][1]
 
 
-class Field:
-    def __init__(self, name, fieldtype, valid = None, ignore = False, value = None, enum = None, islist = False):
+class Field(object):
+    def __init__(self, name, fieldtype, valid=None, ignore=False, value=None, enum=None, islist=False):
         self.name = name
         self.fieldtype = fieldtype
         self.valid = valid
@@ -43,11 +43,11 @@ class Field:
 
     def set_valid(self, valid):
         self.valid = valid
-        if self.value == None and len(self.valid) > 0:
+        if self.value is None and len(self.valid) > 0:
             self.value = self.valid[0]
 
 
-class Message:
+class Message(object):
     def __init__(self, name, fields):
         self.name = name
         self.fields = fields
@@ -62,10 +62,11 @@ class Message:
         return s
 
 
-class Protocol:
+class Protocol(object):
     def __init__(self):
         self.messages = {}
         self.enums = {}
+        self.consts = {}
         self.endianness = "little_endian"
 
 

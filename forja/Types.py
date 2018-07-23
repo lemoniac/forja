@@ -1,8 +1,14 @@
 from struct import pack
 import random
 
-class Integer:
-    def __init__(self, width, signed = False, LE = True):
+class Type(object):
+    def __init__(self):
+        self.bits = None
+
+
+class Integer(Type):
+    def __init__(self, width, signed=False, LE=True):
+        super(Integer, self).__init__()
         self.width = width
         self.endianness = "<" if LE else ">"
         self.signed = signed
@@ -20,7 +26,7 @@ class Integer:
 
 
     def default(self):
-       return 0
+        return 0
 
 
     def random(self):
@@ -61,8 +67,9 @@ class Integer:
                 raise Exception("wrong width")
 
 
-class Fixed:
+class Fixed(Type):
     def __init__(self, length):
+        super(Fixed, self).__init__()
         self.length = length
 
 
@@ -98,8 +105,11 @@ class Fixed:
         return pack(str(self.length) + "s", value)
 
 
-class String:
+class String(Type):
     """Null terminated string"""
+
+    def __init__(self):
+        super(String, self).__init__()
 
     def __len__(self):
         return self.length + 1
@@ -114,8 +124,12 @@ class String:
         return ""
 
 
-class LenString:
+class LenString(Type):
     """Length+string"""
+
+    def __init__(self):
+        super(LenString, self).__init__()
+
 
     def __len__(self):
         return self.length + 1
